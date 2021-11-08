@@ -8,18 +8,40 @@
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()
+    print("Init PlayState")
+
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(100, 10)
-    self.tileMap = self.level.tileMap
+    
+    self.chapter = 1
+
     self.background = math.random(3)
     self.backgroundX = 0
 
     self.gravityOn = true
     self.gravityAmount = 6
 
+    self.playerTouchedFlagpole = false
+
+
+    
+end
+
+function PlayState:enter(params)
+
+    print("Enter PlayState")
+
+    self.chapter = params.chapter
+
+    self.level = LevelMaker.generate(100 + (self.chapter - 1) * 50, 10 )
+
+    print("Level "..self.chapter..": Width "..self.level.tileMap.width)
+    self.tileMap = self.level.tileMap
+
+    self.spawnX = ToPixelCoord(self.level:getFirstSafeSpawnX())
+
     self.player = Player({
-        x = 0, y = 0,
+        x = self.spawnX, y = 0,
         width = 16, height = 20,
         texture = 'green-alien',
         stateMachine = StateMachine {
@@ -32,9 +54,14 @@ function PlayState:init()
         level = self.level
     })
 
+    self.player.score = params.score
+
     self:spawnEnemies()
 
     self.player:changeState('falling')
+
+
+
 end
 
 function PlayState:update(dt)

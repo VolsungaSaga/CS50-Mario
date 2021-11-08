@@ -86,6 +86,24 @@ GEMS = {
     1, 2, 3, 4, 5, 6, 7, 8
 }
 
+--Top half of the image.
+KEYS = {
+    1,2,3,4
+}
+--Bottom half of the image.
+LOCKS = {
+    5,6,7,8
+}
+
+-- Base, Mid, and Top sections of the flag.
+FLAGPOLE = {
+    20, 11, 2
+}
+
+FLAG = {
+    25,26,27
+}
+
 JUMP_BLOCKS = {}
 
 for i = 1, 30 do

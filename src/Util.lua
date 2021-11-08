@@ -62,6 +62,40 @@ function GenerateTileSets(quads, setsX, setsY, sizeX, sizeY)
     return tilesets
 end
 
+function GenerateKeys(quads)
+    local keys = {}
+
+    for i = 1, 4, 1 do
+        keys[i] = quads[i]
+    end
+
+    return keys
+    
+end
+
+function GenerateLocks(quads)
+    local locks = {}
+
+    for i = 5, 8, 1 do
+        locks[i % 4] = quads[i]
+    end
+    
+    return locks
+end
+
+
+--[[
+    Convert either an x or y coordinate to/from pixel/tile coordinate systems.
+]]
+function ToPixelCoord(tile_coord)
+    return (tile_coord - 1) * TILE_SIZE
+end
+
+function ToTileCoord(pixel_coord)
+    return (pixel_coord + 1) / TILE_SIZE
+end
+
+
 --[[
     Recursive table printing function.
     https://coronalabs.com/blog/2014/09/02/tutorial-printing-table-contents/

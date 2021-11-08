@@ -15,6 +15,11 @@ function LevelMaker.generate(width, height)
     local entities = {}
     local objects = {}
 
+    local keySpawned = false
+    local keyColor = math.random(#KEYS)
+
+    local lockSpawned = false
+
     local tileID = TILE_ID_GROUND
     
     -- whether we should draw our tiles with toppers
@@ -157,12 +162,24 @@ function LevelMaker.generate(width, height)
                         end
                     }
                 )
+
+            elseif not keySpawned and Gamble(10) then
+                table.insert(objects, CreateKey(ToPixelCoord(x), ToPixelCoord(blockHeight), keyColor))
+                keySpawned = true
+
+            elseif keySpawned and not lockSpawned and Gamble(10) then
+                table.insert(objects, CreateLock(ToPixelCoord(x), ToPixelCoord(blockHeight), keyColor))
+                lockSpawned = true
             end
         end
     end
 
     local map = TileMap(width, height)
     map.tiles = tiles
+
+
+    --Sweep for flagpole spawning.
+    local level = GameLevel(entities, objects, map)
     
-    return GameLevel(entities, objects, map)
+    return level
 end

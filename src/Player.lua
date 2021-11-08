@@ -13,6 +13,10 @@ Player = Class{__includes = Entity}
 function Player:init(def)
     Entity.init(self, def)
     self.score = 0
+    self.hasKey = false
+
+    self.playerTouchedFlagpole = false
+
 end
 
 function Player:update(dt)
@@ -41,6 +45,11 @@ function Player:checkLeftCollisions(dt)
         -- reset X if new collided object
         if #collidedObjects > 0 then
             self.x = self.x + PLAYER_WALK_SPEED * dt
+            for k, obj in pairs(collidedObjects) do
+                if is_a(obj, FlagpolePiece) then
+                    FlagpolePiece.onCollide(obj, self)
+                end
+            end
         end
     end
 end
@@ -63,6 +72,11 @@ function Player:checkRightCollisions(dt)
         -- reset X if new collided object
         if #collidedObjects > 0 then
             self.x = self.x - PLAYER_WALK_SPEED * dt
+            for k, obj in pairs(collidedObjects) do
+                if is_a(obj, FlagpolePiece) then
+                    FlagpolePiece.onCollide(obj, self)
+                end
+            end
         end
     end
 end

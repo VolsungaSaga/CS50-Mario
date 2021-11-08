@@ -21,11 +21,13 @@ Timer = require 'lib/knife.timer'
 --
 -- our own code
 --
-
+require 'lib/misc_helpers'
+require 'lib/class_helpers'
 -- utility
 require 'src/constants'
 require 'src/StateMachine'
 require 'src/Util'
+
 
 -- game states
 require 'src/states/BaseState'
@@ -42,6 +44,8 @@ require 'src/states/entity/snail/SnailChasingState'
 require 'src/states/entity/snail/SnailIdleState'
 require 'src/states/entity/snail/SnailMovingState'
 
+require 'src/states/entity/FlagIdleState'
+
 -- general
 require 'src/Animation'
 require 'src/Entity'
@@ -52,7 +56,10 @@ require 'src/Player'
 require 'src/Snail'
 require 'src/Tile'
 require 'src/TileMap'
-
+require 'src/game_objects/Key'
+require 'src/game_objects/Lock'
+require 'src/game_objects/Flagpole'
+require 'src/Flag'
 
 gSounds = {
     ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
@@ -62,7 +69,9 @@ gSounds = {
     ['pickup'] = love.audio.newSource('sounds/pickup.wav', 'static'),
     ['empty-block'] = love.audio.newSource('sounds/empty-block.wav', 'static'),
     ['kill'] = love.audio.newSource('sounds/kill.wav', 'static'),
-    ['kill2'] = love.audio.newSource('sounds/kill2.wav', 'static')
+    ['kill2'] = love.audio.newSource('sounds/kill2.wav', 'static'),
+    ['victory'] = love.audio.newSource('sounds/victory.mp3', 'static')
+
 }
 
 gTextures = {
@@ -73,7 +82,9 @@ gTextures = {
     ['gems'] = love.graphics.newImage('graphics/gems.png'),
     ['backgrounds'] = love.graphics.newImage('graphics/backgrounds.png'),
     ['green-alien'] = love.graphics.newImage('graphics/green_alien.png'),
-    ['creatures'] = love.graphics.newImage('graphics/creatures.png')
+    ['creatures'] = love.graphics.newImage('graphics/creatures.png'),
+    ['keys-and-locks'] = love.graphics.newImage('graphics/keys_and_locks.png'),
+    ['flags'] = love.graphics.newImage('graphics/flags.png')
 }
 
 gFrames = {
@@ -86,7 +97,11 @@ gFrames = {
     ['gems'] = GenerateQuads(gTextures['gems'], 16, 16),
     ['backgrounds'] = GenerateQuads(gTextures['backgrounds'], 256, 128),
     ['green-alien'] = GenerateQuads(gTextures['green-alien'], 16, 20),
-    ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16)
+    ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
+
+    ['keys-and-locks'] = GenerateQuads(gTextures['keys-and-locks'], 16, 16),
+    ['flags'] = GenerateQuads(gTextures['flags'], 16, 16 )
+
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within
