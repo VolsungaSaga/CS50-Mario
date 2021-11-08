@@ -9,7 +9,7 @@ FlagIdleState = Class{__includes = BaseState}
 function FlagIdleState:init(flag)
     self.flag = flag
     self.animation = Animation {
-        frames = {FLAG[1],FLAG[2],FLAG[3]},
+        frames = {FLAG[1],FLAG[2]},
         interval = 0.5
     }
 

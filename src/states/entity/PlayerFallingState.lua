@@ -83,7 +83,11 @@ function PlayerFallingState:update(dt)
             gSounds['kill']:play()
             gSounds['kill2']:play()
             self.player.score = self.player.score + 100
+
             table.remove(self.player.level.entities, k)
+
+            self.player:changeState('jump')
+
 
         end
     end
